@@ -37,6 +37,11 @@ function refreshToken(req: Request, res: Response, next: NextFunction): void {
   const token = req.cookies.refreshToken;
   const ipAddress = req.ip || '';
 
+  if (!token) {
+    res.status(401).json({ message: 'No refresh token found' });
+    return;
+  }
+
   accountService
     .refreshToken({ token, ipAddress })
     .then(({ refreshToken, ...account }: any) => {
@@ -49,6 +54,11 @@ function refreshToken(req: Request, res: Response, next: NextFunction): void {
 function revokeToken(req: Request, res: Response, next: NextFunction): void {
   const token = req.cookies.refreshToken || req.body.token;
   const ipAddress = req.ip || '';
+
+  if (!token) {
+    res.status(400).json({ message: 'Token is required' });
+    return;
+  }
 
   accountService
     .revokeToken({ token, ipAddress })
