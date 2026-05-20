@@ -1,0 +1,169 @@
+openapi: 3.0.0
+info:
+  title: Node.js Sign-up and Verification API
+  version: 1.0.0
+servers:
+  - url: https://ipt-2026-backend-rollo.onrender.com
+    description: Production server
+  - url: http://localhost:4000
+    description: Local development server
+paths:
+  /accounts/authenticate:
+    post:
+      summary: Authenticate account credentials and return a JWT token and a cookie with a refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /accounts/refresh-token:
+    post:
+      summary: Use a refresh token to generate a new JWT token and a new refresh token
+      responses:
+        '200':
+          description: OK
+  /accounts/revoke-token:
+    post:
+      summary: Revoke a refresh token
+      responses:
+        '200':
+          description: OK
+  /accounts/register:
+    post:
+      summary: Register a new user account and send a verification email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                confirmPassword:
+                  type: string
+                acceptTerms:
+                  type: boolean
+      responses:
+        '200':
+          description: OK
+  /accounts/verify-email:
+    post:
+      summary: Verify a new account with a verification token received by email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                token:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /accounts/forgot-password:
+    post:
+      summary: Submit email address to reset the password on an account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /accounts/validate-reset-token:
+    post:
+      summary: Validate the reset password token received by email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                token:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /accounts/reset-password:
+    post:
+      summary: Reset the password for an account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                token:
+                  type: string
+                password:
+                  type: string
+                confirmPassword:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /accounts:
+    get:
+      summary: Get a list of all accounts (admin only)
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Create a new account (admin only)
+      responses:
+        '200':
+          description: OK
+  /accounts/{id}:
+    get:
+      summary: Get a single account by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    put:
+      summary: Update an account
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      summary: Delete an account
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
